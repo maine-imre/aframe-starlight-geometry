@@ -3,13 +3,18 @@
   <head>
     <title>Starlight Geometry</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="primitives/earth.js"></script>
     <script src="primitives/star.js"></script>
     </head>
   <body>
     <a-scene>
-      <a-sphere id="earth" src="https://raw.githubusercontent.com/aframevr/sample-assets/master/assets/images/space/earth_atmos_4096.jpg" radius="2"
-                segments-height="84"></a-sphere>
-    <a-star id="star1"></a-star>
+      <a-assets>
+        <img id="earth_atmos_4096" src="https://raw.githubusercontent.com/aframevr/sample-assets/master/assets/images/space/earth_atmos_4096.jpg"
+          crossorigin="anonymous">
+      </a-assets>
+      <a-sphere id="earth" material="src: #earth_atmos_4096" radius="2"></a-sphere>
+      <a-carton></a-carton>
+      <a-star></a-star>
       <a-sky color="white"></a-sky>
     </a-scene>
   </body>

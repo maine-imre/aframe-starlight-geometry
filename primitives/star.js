@@ -8,60 +8,105 @@ AFRAME.registerPrimitive('a-star', {
     depth: 'star.depth',
     earthcenter: 'star.earthcenter',
     earthrotoffset: 'star.earthrotoffset',
-    earthscale: 'star.earthRadius'
+    earthscale: 'star.earthscale',
   }
 });
 
 AFRAME.registerComponent('star', {
   schema: {
-    coordinates:           {default: [0,0]},
-    depth:                 {default: 1},
-    earthcenter:           {default: [0,0,0]},
-    earthrotoffset:   {default: [0,0]}, //move to quaternions
+    coordinates:           {type: 'vec2', default: {x:0,y:0}}, //in radians
+    depth:                 {default: 5},
+    earthcenter:           {type: 'vec3', default: {x: 0, y: 0, z: 0}},
+    earthrotoffset:   {type: 'vec2', default: {x:0,y:0}}, //move to quaternions
     earthscale:           {default: 1},
-    mode:                  {default: 3}
+    start: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
+    end: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
+    color: {type: 'color', default: '#74BEC1'},
+    opacity: {type: 'number', default: 1},
+    visible: {default: true}
   },
   init: function () {
-  const el = this.el,
-      data = this.data;
+    var data = this.data;
+    var geometry;
+    var material;
+    this.rendererSystem = this.el.sceneEl.systems.renderer;
+    material = this.material = new THREE.LineBasicMaterial({
+      color: data.color,
+      opacity: data.opacity,
+      transparent: data.opacity < 1,
+      visible: data.visible
+    });
+    geometry = this.geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
 
-  geometry = new THREE.BufferGeometry();
-    this.lineSegments = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial());
-    el.setObject3D('linesegments', this.lineSegments);
+    this.rendererSystem.applyColorCorrection(material.color);
+    this.line = new THREE.Line(geometry, material);
+    this.el.setObject3D(this.attrName, this.line);
   },
 
-  update: function (prevData) {
-    data = this.data,
-        lineSegments = this.lineSegments;
-    localLatLong = data.coordiantes + data.earthrotoffset;
-    localSpherical = new THREE.Spherical(localLatLong.x, localLatLong.y, data.earthRadius);
-    localCartesian = new THREE.Vector3();
-    localCartesian.setFromSpherical(localSpherical);
+  update: function (oldData) {
+      var data = this.data;
+      var geometry = this.geometry;
+      var geoNeedsUpdate = false;
+      var material = this.material;
+      var positionArray = geometry.attributes.position.array;
 
-    linePoints = []
-    if(data.mode >= 0){
-    linePoints.push(data.earthcenter + localCartesian*data.depth); //segment 0
-    linePoints.push(data.earthcenter + localCartesian);}
-    if(data.mode >= 1){
-    linePoints.push(data.earthcenter + localCartesian); //segment 1
-    linePoints.push(data.earthcenter);}
-    if(data.mode >= 2){
-    linePoints.push(data.earthcenter);  //segment 2
-    linePoints.push(data.earthcenter - localCartesian);}
-    if(data.mode >= 3){
-    linePoints.push(data.earthcenter - localCartesian); //segment 3
-    linePoints.push(data.earthcenter - localCartesian*data.depth);}
+      //recalculate from coords
+      localLatLong = new THREE.Vector2();
+      localLatLong.copy(data.coordinates);
+      localLatLong.add(data.earthrotoffset);
+      localSpherical = new THREE.Spherical( data.scale,localLatLong.x, localLatLong.y);
+      localCartesian = new THREE.Vector3();
+      localCartesian.setFromSpherical(localSpherical);
 
-    lineSegments.geometry.vertices = linePoints;
-    lineSegments.geometry.verticesNeedUpdate = true;
+      start = new THREE.Vector3();
+      end = new THREE.Vector3();
+      start.copy(data.earthcenter);
+      end.copy(data.earthcenter);
+      start.addScaledVector(localCartesian,data.depth);
+      end.add(localCartesian);
+      console.log(start);
 
-    if (!Object.keys(prevData).length) return;
+      data.start.x = start.x;
+      data.start.y = start.y;
+      data.start.z = start.z;
+      data.end.x = end.x;
+      data.end.y = end.y;
+      data.end.z = end.z;
 
-    this.remove();
-    this.init();
-  },
+      // Update geometry.
+      if (!isEqualVec3(data.start, oldData.start)) {
+        positionArray[0] = data.start.x;
+        positionArray[1] = data.start.y;
+        positionArray[2] = data.start.z;
+        geoNeedsUpdate = true;
+      }
 
-  remove: function () {
-        this.el.removeObject3D('linesegments');
-  }
+      if (!isEqualVec3(data.end, oldData.end)) {
+        positionArray[3] = data.end.x;
+        positionArray[4] = data.end.y;
+        positionArray[5] = data.end.z;
+        geoNeedsUpdate = true;
+      }
+
+      if (geoNeedsUpdate) {
+        geometry.attributes.position.needsUpdate = true;
+        geometry.computeBoundingSphere();
+      }
+
+      material.color.setStyle(data.color);
+      this.rendererSystem.applyColorCorrection(material.color);
+      material.opacity = data.opacity;
+      material.transparent = data.opacity < 1;
+      material.visible = data.visible;
+    },
+
+    remove: function () {
+      this.el.removeObject3D('line', this.line);
+    }
 });
+
+function isEqualVec3 (a, b) {
+  if (!a || !b) { return false; }
+  return (a.x === b.x && a.y === b.y && a.z === b.z);
+}
