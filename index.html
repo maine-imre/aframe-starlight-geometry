@@ -12,9 +12,8 @@
         <img id="earth_atmos_4096" src="https://raw.githubusercontent.com/aframevr/sample-assets/master/assets/images/space/earth_atmos_4096.jpg"
           crossorigin="anonymous">
       </a-assets>
-      <a-sphere id="earth" material="src: #earth_atmos_4096" radius="2"></a-sphere>
-      <a-carton></a-carton>
-      <a-star></a-star>
+      <a-sphere id="earth" material="src: #earth_atmos_4096"></a-sphere>
+      <a-star target="#earth"></a-star>
       <a-sky color="white"></a-sky>
     </a-scene>
   </body>

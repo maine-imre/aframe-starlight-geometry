@@ -6,9 +6,7 @@ AFRAME.registerPrimitive('a-star', {
   mappings: {
     coordinates: 'star.coordinates',
     depth: 'star.depth',
-    earthcenter: 'star.earthcenter',
-    earthrotoffset: 'star.earthrotoffset',
-    earthscale: 'star.earthscale',
+    target: 'star.target'
   }
 });
 
@@ -16,9 +14,10 @@ AFRAME.registerComponent('star', {
   schema: {
     coordinates:           {type: 'vec2', default: {x:0,y:0}}, //in radians
     depth:                 {default: 5},
-    earthcenter:           {type: 'vec3', default: {x: 0, y: 0, z: 0}},
-    earthrotoffset:   {type: 'vec2', default: {x:0,y:0}}, //move to quaternions
-    earthscale:           {default: 1},
+    target:                  {type: 'selector'},
+    targetposition:           {type: 'vec3', default: {x: 0, y: 0, z: 0}},
+    targetquaternion:   {type: 'vec2', default: {x:0,y:0}}, //move to quaternions
+    targetradius:           {default: 1},
     start: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
     end: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
     color: {type: 'color', default: '#74BEC1'},
@@ -29,6 +28,10 @@ AFRAME.registerComponent('star', {
     var data = this.data;
     var geometry;
     var material;
+
+    data.targetposition = new THREE.Vector3();
+    data.targetquaternion = new THREE.Quaternion();
+
     this.rendererSystem = this.el.sceneEl.systems.renderer;
     material = this.material = new THREE.LineBasicMaterial({
       color: data.color,
@@ -44,6 +47,11 @@ AFRAME.registerComponent('star', {
     this.el.setObject3D(this.attrName, this.line);
   },
 
+  tick: function(time, deltaTime){
+    var data = this.data;
+    data.coordinates.x = data.coordinates.x+deltaTime*10;
+  },
+
   update: function (oldData) {
       var data = this.data;
       var geometry = this.geometry;
@@ -51,21 +59,22 @@ AFRAME.registerComponent('star', {
       var material = this.material;
       var positionArray = geometry.attributes.position.array;
 
+      data.targetposition.copy(data.target.object3D.position);
+      data.targetquaternion.copy(data.target.object3D.quaternion);
+      data.targetradius = data.target.attributes.radius;
+
       //recalculate from coords
-      localLatLong = new THREE.Vector2();
-      localLatLong.copy(data.coordinates);
-      localLatLong.add(data.earthrotoffset);
+      localLatLong = new THREE.Vector2(THREE.Math.degToRad(data.coordinates.x),THREE.Math.degToRad(data.coordinates.y));
       localSpherical = new THREE.Spherical( data.scale,localLatLong.x, localLatLong.y);
       localCartesian = new THREE.Vector3();
       localCartesian.setFromSpherical(localSpherical);
-
+      localCartesian.applyQuaternion(data.targetquaternion);
       start = new THREE.Vector3();
       end = new THREE.Vector3();
-      start.copy(data.earthcenter);
-      end.copy(data.earthcenter);
+      start.copy(data.targetposition);
+      end.copy(data.targetposition);
       start.addScaledVector(localCartesian,data.depth);
       end.add(localCartesian);
-      console.log(start);
 
       data.start.x = start.x;
       data.start.y = start.y;
