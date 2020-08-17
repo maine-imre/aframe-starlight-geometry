@@ -6,26 +6,25 @@
     <meta name="description" content="Playing with Latitude, Longitude and Starlight"></meta>
 
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-globe-component/dist/aframe-globe-component.min.js"></script>  </head>
-  </head>
+    <script src="https://unpkg.com/aframe-globe-component/dist/aframe-globe-component.min.js"></script>
+    <script src="https://cdn.rawgit.com/matthewbryancurtis/aframe-star-system-component/db4f1030/index.js"></script>
+    </head>
   <body>
-    <a-scene stats>
-      <a-camera position="0 0 25" wasd-controls="fly: true; acceleration: 200">
-        <a-cursor color="lavender" opacity="0.5"></a-cursor>
-      </a-camera>
-      <a-sky color="#001"></a-sky>
-
-      <a-entity id="globe" position="0 1.5 0" scale="0.01 0.01 0.01"  globe="
+      <a-scene>
+                <a-sky color="black"></a-sky>
+        <a-entity star-system></a-entity>
+      <a-entity id="globe" position="0 1.5 -2" scale="0.01 0.01 0.01"  globe="
         globe-image-url: //unpkg.com/three-globe/example/img/earth-dark.jpg;
         bump-image-url: //unpkg.com/three-globe/example/img/earth-topology.png;
-        show-atmosphere: true;
+        show-atmosphere: false;
         show-graticules: true;
+        arc-altitude: 0;
       "></a-entity>
     </a-scene>
 
     <script>
       // Gen random data
-      const N = 5;
+      const N = 10;
       const gData = [...Array(N).keys()].map(() => ({
         lat: (Math.random() - 0.5) * 180,
         lng: (Math.random() - 0.5) * 360,
@@ -37,7 +36,20 @@
       globeEntity.setAttribute('globe', {
         pointsData: gData,
         pointAltitude: 'size',
-        pointColor: 'color'
+        pointColor: 'color',
+      });
+
+      const arcsData = [...Array(N).keys()].map(() => ({
+        startLat: (Math.random() - 0.5) * 180,
+        startLng: (Math.random() - 0.5) * 360,
+        endLat: (Math.random() - 0.5) * 180,
+        endLng: (Math.random() - 0.5) * 360,
+        color: [['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)], ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]]
+      }));
+
+      globeEntity.setAttribute('globe', {
+        arcsData: arcsData,
+        arcColor: 'color',
       });
     </script>
 
