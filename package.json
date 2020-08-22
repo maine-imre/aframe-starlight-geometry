@@ -1,16 +1,17 @@
 {
-  "name": "aframe-hello-world-boilerplate",
-  "description": "Boilerplate with A-Frame's 'Hello, World!' of WebVR.",
-  "version": "0.3.0",
+  "name": "aframe-starlight-geometry",
+  "description": "A Scene to Explore the Geometry of Starlight",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "http://maine-irme.github.io/aframe-starlight-geometry",
   "license": "MIT",
   "scripts": {
     "start": "budo --live --verbose --port 3000 --open",
-    "deploy": "ghpages",
-    "ghpages": "ghpages"
+    "deploy": "ghpages"
   },
   "devDependencies": {
     "budo": "^11.6.4",
-    "ghpages": "0.0.10"
+    "ghpages": "^0.0.10"
   },
   "keywords": [
     "aframe",
@@ -21,7 +22,14 @@
     "vr"
   ],
   "dependencies": {
+    "three": "^0.119.1",
     "aframe": "^1.0.4",
-    "aframe-globe-component": "^1.3.4"
+    "aframe-globe-component": "^1.3.4",
+    "aframe-orbit-controls": "^1.3.0",
+    "aframe-supercraft-loader": "^3.0.0",
+    "aframe-star-system-component": "^1.0.0",
+    "aframe-extras": "^6.1.0",
+    "super-hands": "^3.0.0",
+    "three-globe": "^2.8.8"
   }
 }
