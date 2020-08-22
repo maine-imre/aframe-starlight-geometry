@@ -29,7 +29,6 @@
     "aframe-supercraft-loader": "^3.0.0",
     "aframe-star-system-component": "^1.0.0",
     "aframe-extras": "^6.1.0",
-    "super-hands": "^3.0.0",
     "three-globe": "^2.8.8"
   }
 }
