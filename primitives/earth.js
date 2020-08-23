@@ -1,21 +1,29 @@
 AFRAME.registerComponent('earth', {
   schema: {
-    scale: {default: .000001},
-    radius: {default: 6371000}, //earth radius meters
   },
   init: function(){
-    const el = this.el,
-        data = this.data;
 
   },
-
   tick: function(time, deltaTime){
-    var data = this.data;
-    data.radius = data.radius + deltaTime;
+    // Pull Data from subpoints
+    //move this as another component on the globe?  use custom?
+    const globeEntity = document.querySelector('#globe');
+    const sceneEl = document.querySelector('a-scene');
+    const els = sceneEl.querySelectorAll('a-subpoint');
+
+    const gData = Array.from(els).map(el => ({
+      lat: el.components.subpoint.data.coordinates.x,
+      lng: el.components.subpoint.data.coordinates.y,
+      color: el.components.subpoint.data.color
+    }));
+
+    globeEntity.setAttribute('globe', {
+      pointsData: gData,
+      pointColor: 'color',
+    });
   },
 
   update: function (oldData) {
-      var data = this.data;
-      this.attributes.radius = data.radius*data.scale;
+
   }
 });

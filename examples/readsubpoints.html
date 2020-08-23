@@ -11,19 +11,23 @@
     <script src="../node_modules/aframe-orbit-controls/dist/aframe-orbit-controls.min.js"></script>
     <script src="../node_modules/aframe-star-system-component/index.js"></script>
     <script src="../node_modules/aframe-teleport-controls/dist/aframe-teleport-controls.min.js"></script>
+    <script src="../primitives/earth.js"></script>
+    <script src="../primitives/subpoint.js"></script>
   </head>
   <body>
     <a-scene>
       <a-entity id="vcameraRig">
         <a-camera id="head" look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
+        <!--
         <a-entity id="leftHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
         <a-entity id="rightHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+       -->
       </a-entity>
       <a-sky color="black"></a-sky>
-      <a-entity star-system></a-entity>
+      <a-entity id="starsky" star-system></a-entity>
 
       <!-- earth scale = 0.01 ==> earth radius = 1m -->
-      <a-entity id="globe" position="0 1.6 0" scale="0.01 0.01 0.01"  stretchable
+      <a-entity id="globe" position="0 1.6 0" scale="0.01 0.01 0.01"  earth
         globe="
           globe-image-url: ../node_modules/three-globe/example/img/earth-blue-marble.jpg;
           bump-image-url: ../node_modules/three-globe/example/img/earth-topology.png;
@@ -32,42 +36,12 @@
           arc-altitude: 0;
           point-altitude: 3000;
           ">
-
-        <a-sphere id="subpoint1" grabbable position="1 0 0" scale="0.01 0.01 0.01"><a-sphere>
-        <a-sphere id="subpoint2" grabbable position="0 1 0" scale="0.01 0.01 0.01"><a-sphere>
-        <a-sphere id="subpoint3" grabbable position="0 0 1" scale="0.01 0.01 0.01"><a-sphere>
-        <a-sphere id="subpoint1" grabbable position="-1 0 0" scale="0.01 0.01 0.01"><a-sphere>
-        <a-sphere id="subpoint2" grabbable position="0 -1 0" scale="0.01 0.01 0.01"><a-sphere>
-        <a-sphere id="subpoint4" grabbable position="0 0 -1" scale="0.01 0.01 0.01"><a-sphere>
-
       </a-entity>
+      <a-subpoint id="subpoint1" coordinates="45, 30" target='#globe'> </a-subpoint>
+      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719"></a-subpoint>
+
 
     </a-scene>
-
-    <script>
-      // Pull Data from subpoints
-      //move this as another component on the globe?  use custom?
-      const globeEntity = document.querySelector('#globe');
-      const globeComponent = globeEntity.components.globe;
-      var sceneEl = document.querySelector('a-scene');
-      var els = sceneEl.querySelectorAll('a-sphere');
-
-      const gData = Array.from(els).map(el => ({
-        lat: globeComponent.toGeoCoords(el.getAttribute('position')).lat,
-        lng: globeComponent.toGeoCoords(el.getAttribute('position')).lng,
-        color: ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]
-      }));
-
-      for (var i = 0; i < gData.length; i++) {
-        console.log(els[i])
-        console.log(gData[i]);
-      }
-
-      globeEntity.setAttribute('globe', {
-        pointsData: gData,
-        pointColor: 'color',
-      });
-    </script>
 
     <!-- GitHub Corner. -->
     <a href="https://github.com/maine-imre/aframe-starlight-geometry" class="github-corner">
