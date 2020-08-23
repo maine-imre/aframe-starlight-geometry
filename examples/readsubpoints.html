@@ -10,13 +10,14 @@
     <script src="../node_modules/aframe-globe-component/dist/aframe-globe-component.min.js"></script>
     <script src="../node_modules/aframe-orbit-controls/dist/aframe-orbit-controls.min.js"></script>
     <script src="../node_modules/aframe-star-system-component/index.js"></script>
+    <script src="../node_modules/aframe-teleport-controls/dist/aframe-teleport-controls.min.js"
   </head>
   <body>
     <a-scene>
-      <a-entity id="vr-rig">
-        <a-camera look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
-        <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
-        <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+      <a-entity id="vcameraRig">
+        <a-camera id="head" look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
+        <a-entity id="leftHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+        <a-entity id="rightHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
       </a-entity>
       <a-sky color="black"></a-sky>
       <a-entity star-system></a-entity>
