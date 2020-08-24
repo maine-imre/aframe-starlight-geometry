@@ -25,8 +25,6 @@ AFRAME.registerComponent('subpoint', {
     geometry.setAttribute('position', data.position);
   },
   tick: function (time, deltaTime) {
-    this.data.coordinates.add(new THREE.Vector2(deltaTime/100, deltaTime/100));
-    this.data.hasChanged = true;
   },
   remove: function () {
   }
