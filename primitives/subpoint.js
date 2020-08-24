@@ -13,37 +13,20 @@ AFRAME.registerComponent('subpoint', {
     //position:           {type: 'vec3', default: {x: 0, y: 0, z: 0}},
     coordinates:           {type: 'vec2', default: {x:0,y:0}}, //in degrees
     color: {type: 'color', default: '#ffffff'},
+    hasChanged: {type:'bool'}
   },
   init: function(){
     var data = this.data;
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
-
+    data.coordinates = new THREE.Vector2(data.coordinates.x,data.coordinates.y);
     position = globeComponent.getCoords(data.coordinates.x, data.coordinates.y);
     geometry = this.geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', data.position);
-
-    const sceneEl = document.querySelector('a-scene');
-    const controls = sceneEl.querySelectorAll('hand-controls');
-
-    for (var i = 0; i < controls.length; i++) {
-      controlls[i].addEventListener('gridpdwn', gripdown(e));
-      controls[i].addEventListener('gripup', gripUp(e));
-    }
-
   },
-  gripdown: function(gripEvent){console.log(gripEvent)},
-  gripup: function(gripEvent){console.log(gripEvent)},
-  update: function () {
-    //var position = this.geometry.getAttribute('position');
-    //move with controls here
-
-    //var data = this.data;
-    //const globeEntity = document.querySelector('#globe');
-    //const globeComponent = globeEntity.components.globe;
-    //data.coordinates = [globeComponent.toGeoCoords(position).lat,globeComponent.toGeoCoords(position).lng];
-    //position = globeComponent.getCoords({lat: data.coordinates.x, lng: data.coordinates.y, altitude:1});
-    //this.geometry.setAttribute('position', data.position);
+  tick: function (time, deltaTime) {
+    this.data.coordinates.add(new THREE.Vector2(deltaTime/100, deltaTime/100));
+    this.data.hasChanged = true;
   },
   remove: function () {
   }

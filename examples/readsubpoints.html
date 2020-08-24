@@ -27,8 +27,8 @@
       <a-entity id="starsky" star-system></a-entity>
 
       <!-- earth scale = 0.01 ==> earth radius = 1m -->
-      <a-entity id="globe" position="0 1.6 0" scale="0.01 0.01 0.01"  earth
-        globe="
+      <a-entity id="globe" earth position="0 1.6 0" scale="0.01 0.01 0.01"
+          globe="
           globe-image-url: ../node_modules/three-globe/example/img/earth-blue-marble.jpg;
           bump-image-url: ../node_modules/three-globe/example/img/earth-topology.png;
           show-atmosphere: false;
@@ -37,7 +37,7 @@
           point-altitude: 3000;
           ">
       </a-entity>
-      <a-subpoint id="subpoint1" coordinates="45, 30" target='#globe'> </a-subpoint>
+      <a-subpoint id="subpoint1" coordinates="45, 30"> </a-subpoint>
       <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719"></a-subpoint>
 
 
