@@ -20,11 +20,24 @@ AFRAME.registerComponent('subpoint', {
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
     data.coordinates = new THREE.Vector2(data.coordinates.x,data.coordinates.y);
-    position = globeComponent.getCoords(data.coordinates.x, data.coordinates.y);
+    globePosition = globeEntity.object3D.position;
+    position = globeComponent.getCoords(data.coordinates.x, data.coordinates.y, 0);
+    worldPosition = {x: position.x*.01+globePosition.x, y: position.y*.01+globePosition.y, z: position.z*.01+globePosition.z};
     geometry = this.geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', data.position);
+    this.el.object3D.position.set(worldPosition.x,worldPosition.y,worldPosition.z);
   },
   tick: function (time, deltaTime) {
+    //this is quite inefficient
+    var data = this.data;
+    const globeEntity = document.querySelector('#globe');
+    const globeComponent = globeEntity.components.globe;
+    globePosition = globeEntity.object3D.position;
+
+    worldPosition = this.el.object3D.position;
+    localposition = {x: (worldPosition.x-globePosition.x)*100, y: (worldPosition.y-globePosition.y)*100, z: (worldPosition.z-globePosition.z)*100};
+    coordinates = globeComponent.toGeoCoords(localposition);
+    data.coordinates = new THREE.Vector2(coordinates.lat, coordinates.lng);
+    data.hasChanged=true;
   },
   remove: function () {
   }

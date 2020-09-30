@@ -11,15 +11,16 @@
     <script src="../node_modules/aframe-orbit-controls/dist/aframe-orbit-controls.min.js"></script>
     <script src="../node_modules/aframe-star-system-component/index.js"></script>
     <script src="../node_modules/aframe-teleport-controls/dist/aframe-teleport-controls.min.js"></script>
+    <script src="../node_modules/super-hands/dist/super-hands.min.js"></script>
     <script src="../primitives/earth.js"></script>
     <script src="../primitives/subpoint.js"></script>
   </head>
   <body>
-    <a-scene>
+    <a-scene stats>
       <a-entity id="cameraRig">
         <a-camera id="head" look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
-        <a-entity id="leftHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
-        <a-entity id="rightHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+        <a-entity id="leftHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc" sphere-collider="objects: a-subpoint" super-hands></a-entity>
+        <a-entity id="rightHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc" sphere-collider="objects: a-subpoint" super-hands></a-entity>
       </a-entity>
       <a-sky color="black"></a-sky>
       <a-entity id="starsky" star-system></a-entity>
@@ -35,10 +36,8 @@
           point-altitude: 3000;
           ">
       </a-entity>
-      <a-subpoint id="subpoint1" coordinates="45, 30"> </a-subpoint>
-      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719"></a-subpoint>
-
-
+      <a-subpoint id="subpoint1" coordinates="45, 30" grabbable draggable dropppable position='0 1 0' geometry="primitive: sphere; radius: .01"> </a-subpoint>
+      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719" grabbable draggable dropppable geometry="primitive: sphere; radius: .01"></a-subpoint>
     </a-scene>
 
     <!-- GitHub Corner. -->
