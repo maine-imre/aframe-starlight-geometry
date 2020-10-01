@@ -36,7 +36,8 @@ AFRAME.registerComponent('subpoint', {
     worldPosition = this.el.object3D.position;
     localposition = {x: (worldPosition.x-globePosition.x)*100, y: (worldPosition.y-globePosition.y)*100, z: (worldPosition.z-globePosition.z)*100};
     coordinates = globeComponent.toGeoCoords(localposition);
-    data.coordinates = new THREE.Vector2(coordinates.lat, coordinates.lng);
+    data.coordinates.x = coordinates.lat;
+    data.coordinates.y = coordinates.lng;
     data.hasChanged=true;
   },
   remove: function () {
