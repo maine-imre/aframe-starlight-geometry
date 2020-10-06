@@ -1,7 +1,10 @@
 AFRAME.registerComponent('earth', {
   schema: {
+    scale: {type: 'int', default: 1}
   },
   init: function(){
+    this.el.setAttribute('geometry',{primitive:'sphere', radius: 95}, true);
+    this.el.setAttribute('material',{visible:false}, true);
   },
   tick: function(time, deltaTime){
     // Pull Data from subpoints
@@ -23,6 +26,9 @@ AFRAME.registerComponent('earth', {
         pointColor: 'color',
       });
     }
+
+    var data = this.data;
+    data.scale = this.el.object3D.scale.x;
     }
   }
 );

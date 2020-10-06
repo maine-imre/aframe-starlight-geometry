@@ -22,10 +22,12 @@ AFRAME.registerComponent('subpoint', {
 
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
+    scale = globeEntity.components.earth.data.scale;
+
     data.coordinates = new THREE.Vector2(data.coordinates.x,data.coordinates.y);
     globePosition = globeEntity.object3D.position;
     position = globeComponent.getCoords(data.coordinates.x, data.coordinates.y, 0);
-    worldPosition = {x: position.x*.01+globePosition.x, y: position.y*.01+globePosition.y, z: position.z*.01+globePosition.z};
+    worldPosition = {x: position.x/scale+globePosition.x, y: position.y/scale+globePosition.y, z: position.z/scale+globePosition.z};
     geometry = this.geometry = new THREE.BufferGeometry();
     this.el.object3D.position.set(worldPosition.x,worldPosition.y,worldPosition.z);
   },
@@ -34,16 +36,20 @@ AFRAME.registerComponent('subpoint', {
     var data = this.data;
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
+    scale = globeEntity.components.earth.data.scale;
+
     globePosition = globeEntity.object3D.position;
     worldPosition = this.el.object3D.position;
-    localposition = {x: (worldPosition.x-globePosition.x)*100, y: (worldPosition.y-globePosition.y)*100, z: (worldPosition.z-globePosition.z)*100};
-    coordinates = globeComponent.toGeoCoords(localposition);
-    data.coordinates.x = coordinates.lat;
-    data.coordinates.y = coordinates.lng;
+    if(this.el.is('dragged')){
+      localposition = {x: (worldPosition.x-globePosition.x)/scale, y: (worldPosition.y-globePosition.y)/scale, z: (worldPosition.z-globePosition.z)/scale};
+      coordinates = globeComponent.toGeoCoords(localposition);
+      data.coordinates.x = coordinates.lat;
+      data.coordinates.y = coordinates.lng;
+    }
 
     //set handle on earth surface
     position = globeComponent.getCoords(data.coordinates.x, data.coordinates.y, 0);
-    worldPosition = {x: position.x*.01+globePosition.x, y: position.y*.01+globePosition.y, z: position.z*.01+globePosition.z};
+    worldPosition = {x: position.x*scale+globePosition.x, y: position.y*scale+globePosition.y, z: position.z*scale+globePosition.z};
     geometry = this.geometry = new THREE.BufferGeometry();
     this.el.object3D.position.set(worldPosition.x,worldPosition.y,worldPosition.z);
   },
