@@ -15,6 +15,26 @@
     <script src="../node_modules/aframe-event-set-component/dist/aframe-event-set-component.min.js"></script>
     <script src="../primitives/earth.js"></script>
     <script src="../primitives/subpoint.js"></script>
+    <script>
+      function updateCoordinates(){
+        const globeEntity = document.querySelector('#globe');
+        const sceneEl = document.querySelector('a-scene');
+        const els = sceneEl.querySelectorAll('a-subpoint');
+        if(Array.from(els).filter(function(item){return (item.components.subpoint.data.hasChanged);}).length > 0){
+          //construct gData
+          const gData = Array.from(els).map(el => ({
+            lat: el.components.subpoint.data.coordinates.x,
+            lng: el.components.subpoint.data.coordinates.y,
+            color: el.components.subpoint.data.color
+          }));
+          globeEntity.setAttribute('globe', {
+            pointsData: gData,
+            pointColor: 'color',
+          });
+      }
+      }
+    </script>
+
   </head>
   <body>
     <a-scene stats>
@@ -37,8 +57,8 @@
           point-altitude: 3000;
           ">
       </a-entity>
-      <a-subpoint id="subpoint1" coordinates="45, 30" grabbable draggable dropppable> </a-subpoint>
-      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719" grabbable draggable dropppable></a-subpoint>
+      <a-subpoint id="subpoint1" coordinates="45, 30" grabbable draggable dropppable event-set ondragend="updateCoordinates()"></a-subpoint>
+      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719" grabbable draggable dropppable ondragend="updateCoordinates()"></a-subpoint>
     </a-scene>
 
     <!-- GitHub Corner. -->

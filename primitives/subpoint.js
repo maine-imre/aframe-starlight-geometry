@@ -13,10 +13,9 @@ AFRAME.registerComponent('subpoint', {
     //position:           {type: 'vec3', default: {x: 0, y: 0, z: 0}},
     coordinates:           {type: 'vec2', default: {x:0,y:0}}, //in degrees
     color: {type: 'color', default: '#ffffff'},
-    hasChanged: {type:'bool'}
   },
   init: function(){
-    this.el.setAttribute('geometry',{primitive:'sphere', radius: .01}, true);
+    this.el.setAttribute('geometry',{primitive:'sphere', radius: .005}, true);
 
     var data = this.data;
     const globeEntity = document.querySelector('#globe');
@@ -27,11 +26,6 @@ AFRAME.registerComponent('subpoint', {
     worldPosition = {x: position.x*.01+globePosition.x, y: position.y*.01+globePosition.y, z: position.z*.01+globePosition.z};
     geometry = this.geometry = new THREE.BufferGeometry();
     this.el.object3D.position.set(worldPosition.x,worldPosition.y,worldPosition.z);
-
-    this.el.addEventListener('end-grab',function(event){
-      console.log('Dragging Ended');
-      this.data.hasChanged=true;
-    });
   },
   tick: function (time, deltaTime) {
     //this is quite inefficient
