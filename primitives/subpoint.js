@@ -15,7 +15,7 @@ AFRAME.registerComponent('subpoint', {
     color: {type: 'color', default: '#ffffff'},
   },
   init: function(){
-    this.el.setAttribute('geometry',{primitive:'sphere', radius: .005}, true);
+    this.el.setAttribute('geometry',{primitive:'sphere', radius: .008}, true);
 
     var data = this.data;
     const globeEntity = document.querySelector('#globe');

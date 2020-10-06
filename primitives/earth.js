@@ -24,5 +24,5 @@ AFRAME.registerComponent('earth', {
       });
     }
     }
-  },
-});
+  }
+);
