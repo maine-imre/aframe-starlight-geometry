@@ -16,6 +16,8 @@ AFRAME.registerComponent('subpoint', {
     hasChanged: {type:'bool'}
   },
   init: function(){
+    this.el.setAttribute('geometry',{primitive:'sphere', radius: .01}, true);
+
     var data = this.data;
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
@@ -25,6 +27,11 @@ AFRAME.registerComponent('subpoint', {
     worldPosition = {x: position.x*.01+globePosition.x, y: position.y*.01+globePosition.y, z: position.z*.01+globePosition.z};
     geometry = this.geometry = new THREE.BufferGeometry();
     this.el.object3D.position.set(worldPosition.x,worldPosition.y,worldPosition.z);
+
+    this.el.addEventListener('end-grab',function(event){
+      console.log('Dragging Ended');
+      this.data.hasChanged=true;
+    });
   },
   tick: function (time, deltaTime) {
     //this is quite inefficient
@@ -32,14 +39,17 @@ AFRAME.registerComponent('subpoint', {
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
     globePosition = globeEntity.object3D.position;
-
     worldPosition = this.el.object3D.position;
     localposition = {x: (worldPosition.x-globePosition.x)*100, y: (worldPosition.y-globePosition.y)*100, z: (worldPosition.z-globePosition.z)*100};
     coordinates = globeComponent.toGeoCoords(localposition);
     data.coordinates.x = coordinates.lat;
     data.coordinates.y = coordinates.lng;
-    //console.log(data.coordinates);
-    data.hasChanged=true;
+
+    //set handle on earth surface
+    position = globeComponent.getCoords(data.coordinates.x, data.coordinates.y, 0);
+    worldPosition = {x: position.x*.01+globePosition.x, y: position.y*.01+globePosition.y, z: position.z*.01+globePosition.z};
+    geometry = this.geometry = new THREE.BufferGeometry();
+    this.el.object3D.position.set(worldPosition.x,worldPosition.y,worldPosition.z);
   },
   remove: function () {
   }

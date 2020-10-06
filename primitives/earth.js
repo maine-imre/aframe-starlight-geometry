@@ -24,14 +24,21 @@ AFRAME.registerComponent('earth', {
       });
     }
 
-    //update gData
+        //update gData
     if(Array.from(els).filter(function(item){return (item.components.subpoint.data.hasChanged);}).length > 0){
+      console.log(Array.from(els).filter(function(item){return (item.components.subpoint.data.hasChanged);}).length);
       //construct gData
       const gData = Array.from(els).map(el => ({
         lat: el.components.subpoint.data.coordinates.x,
         lng: el.components.subpoint.data.coordinates.y,
         color: el.components.subpoint.data.color
       }));
+
+      for (var i = 0; i <  globeEntity.getAttribute('globe').pointsData.length; i++) {
+        if(els[i].components.subpoint.data.hasChanged){
+          els[i].components.subpoint.data.hasChanged = false;
+        }
+      }
 
       globeEntity.setAttribute('globe', {
         pointsData: gData,
