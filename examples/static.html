@@ -6,39 +6,63 @@
     <meta name="description" content="Playing with Latitude, Longitude and Starlight"></meta>
 
     <script src="../node_modules/aframe/dist/aframe.min.js"></script>
-    <script src="../node_modules/aframe-extras/dist/aframe-extras.min.js"></script>
     <script src="../node_modules/aframe-globe-component/dist/aframe-globe-component.min.js"></script>
     <script src="../node_modules/aframe-orbit-controls/dist/aframe-orbit-controls.min.js"></script>
+    <script src="../node_modules/aframe-supercraft-loader/dist/aframe-supercraft-loader.js"></script>
     <script src="../node_modules/aframe-star-system-component/index.js"></script>
-    <script src="../node_modules/aframe-teleport-controls/dist/aframe-teleport-controls.min.js"></script>
+    <script src="../node_modules/aframe-extras/dist/aframe-extras.min.js"></script>
     <script src="../node_modules/super-hands/dist/super-hands.min.js"></script>
-    <script src="../primitives/earth.js"></script>
-    <script src="../primitives/subpoint.js"></script>
+  </head>
   </head>
   <body>
-    <a-scene stats>
-      <a-entity id="cameraRig">
-        <a-camera id="head" look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
-        <a-entity id="leftHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc" sphere-collider="objects: a-subpoint" super-hands></a-entity>
-        <a-entity id="rightHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc" sphere-collider="objects: a-subpoint" super-hands></a-entity>
-      </a-entity>
+    <a-scene>
+      <a-camera look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true">
+      </a-camera>
       <a-sky color="black"></a-sky>
-      <a-entity id="starsky" star-system></a-entity>
+      <a-entity star-system></a-entity>
 
-      <!-- earth scale = 0.01 ==> earth radius = 1m -->
-      <a-entity id="globe" earth position="0 1.6 0" scale="0.01 0.01 0.01"
-          globe="
-          globe-image-url: ../node_modules/three-globe/example/img/earth-blue-marble.jpg;
-          bump-image-url: ../node_modules/three-globe/example/img/earth-topology.png;
-          show-atmosphere: false;
-          show-graticules: true;
-          arc-altitude: 0;
-          point-altitude: 3000;
-          ">
-      </a-entity>
-      <a-subpoint id="subpoint1" coordinates="45, 30" grabbable draggable dropppable position='0 1 0' geometry="primitive: sphere; radius: .01"> </a-subpoint>
-      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719" grabbable draggable dropppable geometry="primitive: sphere; radius: .01"></a-subpoint>
+      <a-entity id="globe" position="0 1.6 0" scale="0.01 0.01 0.01"  stretchable globe="
+        globe-image-url: ../node_modules/three-globe/example/img/earth-blue-marble.jpg;
+        bump-image-url: ../node_modules/three-globe/example/img/earth-topology.png;
+        show-atmosphere: false;
+        show-graticules: true;
+        arc-altitude: 0;
+      "></a-entity>
     </a-scene>
+
+    <script>
+      // Gen random data
+      const N = 10;
+      const gData = [...Array(N).keys()].map(() => ({
+        lat: (Math.random() - 0.5) * 180,
+        lng: (Math.random() - 0.5) * 360,
+        size: 3000,
+        color: ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]
+      }));
+
+      const globeEntity = document.getElementById('globe');
+      const lcontrolsEntity = document.getElementById('lcontrols');
+      const rcontrolsEntity = document.getElementById('rcontrols');
+
+      globeEntity.setAttribute('globe', {
+        pointsData: gData,
+        pointAltitude: 'size',
+        pointColor: 'color',
+      });
+
+      const arcsData = [...Array(N).keys()].map(() => ({
+        startLat: (Math.random() - 0.5) * 180,
+        startLng: (Math.random() - 0.5) * 360,
+        endLat: (Math.random() - 0.5) * 180,
+        endLng: (Math.random() - 0.5) * 360,
+        color: [['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)], ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]]
+      }));
+
+      globeEntity.setAttribute('globe', {
+        arcsData: arcsData,
+        arcColor: 'color',
+      });
+    </script>
 
     <!-- GitHub Corner. -->
     <a href="https://github.com/maine-imre/aframe-starlight-geometry" class="github-corner">

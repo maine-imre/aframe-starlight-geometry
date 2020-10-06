@@ -26,18 +26,29 @@ AFRAME.registerComponent('earth', {
 
     //update gData
     if(Array.from(els).filter(function(item){return (item.components.subpoint.data.hasChanged);}).length > 0){
-      const updateData = globeEntity.getAttribute('globe').pointsData;
-      console.log("Need to Update")
-      for (var i = 0; i < updateData.length; i++) {
-        if(els[i].components.subpoint.data.hasChanged){
-          updateData[i].lat = els[i].components.subpoint.data.coordinates.x;
-          updateData[i].lng = els[i].components.subpoint.data.coordinates.y;
-          els[i].components.subpoint.data.hasChanged = false;
-        }
-      }
+      //construct gData
+      const gData = Array.from(els).map(el => ({
+        lat: el.components.subpoint.data.coordinates.x,
+        lng: el.components.subpoint.data.coordinates.y,
+        color: el.components.subpoint.data.color
+      }));
+
       globeEntity.setAttribute('globe', {
-        pointsData: updateData,
+        pointsData: gData,
+        pointColor: 'color',
       });
+      //const updateData = globeEntity.getAttribute('globe').pointsData;
+      //for (var i = 0; i < updateData.length; i++) {
+      //  if(els[i].components.subpoint.data.hasChanged){
+          //console.log(els[i].components.subpoint.data.coordinates);
+      //    globeEntity.getAttribute('globe').pointsData[i].lat = els[i].components.subpoint.data.coordinates.x;
+      //    globeEntity.getAttribute('globe').pointsData[i].lng = els[i].components.subpoint.data.coordinates.y;
+      //    els[i].components.subpoint.data.hasChanged = false;
+      //  }
+      //}
+      //globeEntity.setAttribute('globe', {
+      //  pointsData: updateData,
+      //});
     }
   },
 });

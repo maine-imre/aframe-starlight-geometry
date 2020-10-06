@@ -38,6 +38,7 @@ AFRAME.registerComponent('subpoint', {
     coordinates = globeComponent.toGeoCoords(localposition);
     data.coordinates.x = coordinates.lat;
     data.coordinates.y = coordinates.lng;
+    //console.log(data.coordinates);
     data.hasChanged=true;
   },
   remove: function () {
