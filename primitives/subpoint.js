@@ -5,6 +5,7 @@ AFRAME.registerPrimitive('a-subpoint', {
   },
   mappings: {
     coordinates: 'subpoint.coordinates',
+    color: 'subpoint.color'
   }
 });
 
@@ -15,9 +16,10 @@ AFRAME.registerComponent('subpoint', {
     color: {type: 'color', default: '#ffffff'},
   },
   init: function(){
-    this.el.setAttribute('geometry',{primitive:'sphere', radius: .008}, true);
-
     var data = this.data;
+    this.el.setAttribute('geometry',{primitive:'sphere', radius: .008}, true);
+    this.el.setAttribute('material',{color:data.color}, true);
+
     const globeEntity = document.querySelector('#globe');
     const globeComponent = globeEntity.components.globe;
     data.coordinates = new THREE.Vector2(data.coordinates.x,data.coordinates.y);

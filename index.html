@@ -37,7 +37,7 @@
   <body>
     <a-scene stats>
       <a-entity id="cameraRig">
-        <a-camera id="head" look-controls orbit-controls="target: 0 1.6 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
+        <a-camera id="head" look-controls orbit-controls="target: 0 0.8 0; minDistance: 0.3; maxDistance: 180; initialPosition: 0 0 3; enablePan: false; enableZoom: true"></a-camera>
         <a-entity id="leftHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc" sphere-collider="objects: a-subpoint" super-hands></a-entity>
         <a-entity id="rightHand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc" sphere-collider="objects: a-subpoint" super-hands></a-entity>
       </a-entity>
@@ -45,7 +45,7 @@
       <a-entity id="starsky" star-system></a-entity>
 
       <!-- earth scale = 0.01 ==> earth radius = 1m -->
-      <a-entity id="globe" earth position="0 1.6 0" scale="0.01 0.01 0.01"
+      <a-entity id="globe" earth position="0 0.8 0" scale="0.01 0.01 0.01"
           globe="
           globe-image-url: ../node_modules/three-globe/example/img/earth-blue-marble.jpg;
           bump-image-url: ../node_modules/three-globe/example/img/earth-topology.png;
@@ -55,8 +55,8 @@
           point-altitude: 3000;
           ">
       </a-entity>
-      <a-subpoint id="subpoint1" coordinates="45, 30" grabbable draggable dropppable event-set ondragend="updateCoordinates(this)"></a-subpoint>
-      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719" grabbable draggable dropppable ondragend="updateCoordinates(this)"></a-subpoint>
+      <a-subpoint id="subpoint1" coordinates="52.3906, 13.0645" grabbable draggable dropppable event-set ondragend="updateCoordinates(this)" color="green"></a-subpoint>
+      <a-subpoint id="subpoint2" coordinates="44.8831, -68.6719" grabbable draggable dropppable ondragend="updateCoordinates(this)" color="#3698D4"></a-subpoint>
     </a-scene>
 
     <!-- GitHub Corner. -->
