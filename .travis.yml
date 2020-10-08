@@ -1,0 +1,12 @@
+language: node_js
+node_js: stable
+install:
+  - npm ci
+cache: npm
+deploy:
+  provider: pages
+  github_token: $GITHUB_TOKEN
+  target_branch: gh-pages
+  skip_cleanup: true
+  on:
+    branch: main
