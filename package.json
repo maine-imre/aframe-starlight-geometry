@@ -3,7 +3,7 @@
   "description": "A Scene to Explore the Geometry of Starlight",
   "version": "0.0.1",
   "private": true,
-  "homepage": "http://maine-irme.github.io/aframe-starlight-geometry",
+  "homepage": "http://maine-irme.github.io/aframe-starlight-geometry/",
   "license": "MIT",
   "scripts": {
     "start": "budo --live --verbose --port 3000 --open",
