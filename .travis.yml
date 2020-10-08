@@ -10,7 +10,6 @@ before_deploy:
 deploy:
   provider: pages
   github_token: $GITHUB_TOKEN
-  local_dir: dist
   target_branch: gh-pages
   on:
     branch: main
