@@ -7,7 +7,9 @@ directories:
 before_deploy:
   - "npm install"
 
+base_url: http://maineimre.github.io/aframe-starlight-geometry/
 deploy:
+  host: github_pages
   provider: pages
   github_token: $GITHUB_TOKEN
   target_branch: gh-pages
