@@ -4,7 +4,8 @@ node_js: stable
 cache: 
 directories:
   - node_modules
-
+script:
+  - npm install
 deploy:
   provider: pages
   github_token: $GITHUB_TOKEN
