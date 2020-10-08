@@ -1,7 +1,10 @@
 language: node_js
 node_js: stable
-
-cache: npm
+install:
+  - npm ci
+cache:
+  directories:
+    - "$Home/.npm" 
 deploy:
   provider: pages
   github_token: $GITHUB_TOKEN
