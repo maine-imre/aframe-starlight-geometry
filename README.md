@@ -1,4 +1,6 @@
 # Experimental Geometry of Starlight Scene
+[![Build Status](https://travis-ci.org/maine-imre/aframe-starlight-geometry.svg?branch=main)](https://travis-ci.org/maine-imre/aframe-starlight-geometry)
+[![CodeFactor](https://www.codefactor.io/repository/github/maine-imre/aframe-starlight-geometry/badge)](https://www.codefactor.io/repository/github/maine-imre/aframe-starlight-geometry)
 
 Implemented in AFRAME.  More to come
 
