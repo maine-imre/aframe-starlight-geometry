@@ -32,16 +32,16 @@
       <!-- earth scale = 0.01 ==> earth radius = 1m -->
       <a-entity id="globe" earth position="0 1.6 0" scale="0.01 0.01 0.01"
           globe="
-          globe-image-url: ../node_modules/three-globe/example/img/earth-blue-marble.jpg;
+          globe-image-url: ../node_modules/three-globe/example/img/earth-night.jpg;
           bump-image-url: ../node_modules/three-globe/example/img/earth-topology.png;
-          show-atmosphere: false;
+          show-atmosphere: true;
           show-graticules: true;
           arc-altitude: 0;
           point-altitude: 3000;
           ">
       </a-entity>
-      <a-subpoint id="subpoint1" coordinates="45, 30"> </a-subpoint>
-      <a-subpoint id="subpoint2" coordinates="44.8831, 68.6719"></a-subpoint>
+      <a-subpoint id="potsdam" coordinates="52.3906, 13.0645" color="lightgreen"> </a-subpoint>
+      <a-subpoint id="orono" coordinates="44.8831, -68.6719" color="#B0D7FF"></a-subpoint>
 
 
     </a-scene>

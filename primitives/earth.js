@@ -32,6 +32,7 @@ AFRAME.registerComponent('earth', {
         if(els[i].components.subpoint.data.hasChanged){
           updateData[i].lat = els[i].components.subpoint.data.coordinates.x;
           updateData[i].lng = els[i].components.subpoint.data.coordinates.y;
+          updateData.color= el.components.subpoint.data.color;
           els[i].components.subpoint.data.hasChanged = false;
         }
       }

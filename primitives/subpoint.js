@@ -5,6 +5,7 @@ AFRAME.registerPrimitive('a-subpoint', {
   },
   mappings: {
     coordinates: 'subpoint.coordinates',
+    color: 'subpoint.color'
   }
 });
 
