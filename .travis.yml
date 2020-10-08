@@ -5,8 +5,8 @@ install:
 cache: npm
 deploy:
   provider: pages
+  edge: true
   github_token: $GITHUB_TOKEN
   target_branch: gh-pages
-  skip_cleanup: true
-  on:
+`  on:
     branch: main
